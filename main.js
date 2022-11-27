@@ -50,7 +50,7 @@ const blockShapes = [
   [[0, 0], [-1, 0], [1, 0], [0, -1]], // T
 ]
 
-const putBlock = (blockIndex, x, y, rotation, remove = false) => {
+const putBlock = (blockIndex, x, y, rotation, remove = false, can_put = false) => {
   const blockShape = blockShapes[blockIndex];
   for (let [dx, dy] of blockShape) {
     for (let num_rotation = 0; num_rotation < rotation % 4; num_rotation++) {
@@ -60,13 +60,29 @@ const putBlock = (blockIndex, x, y, rotation, remove = false) => {
     if (remove) {
       board[y + dy][x + dx] = 0;
     } else {
-      board[y + dy][x + dx] = blockIndex;
+      // すでにミノブロックが置かれている場合は置かない
+      if (board[y + dy][x + dx]) {
+        return false;
+      }
+      // すべてのブロックを置くことができるならば置く
+      if (can_put) {
+        board[y + dy][x + dx] = blockIndex;
+      }
     }
   }
+
+  // ここまで実行できていればすべてのブロックを置くことができるので
+  // 自分自身を呼び出しミノブロックを置く
+  if (!can_put) {
+    putBlock(blockIndex, x, y, rotation, remove, true);
+  }
+  return true;
 };
 
 window.onload = () => {
-  putBlock(5, 4, 2, 0);
-  putBlock(5, 4, 2, 0, true);
+  putBlock(5, 4, 10, 0);
+  putBlock(6, 4, 10, 0); // このミノブロックは置くことができない
+  putBlock(5, 4, 10, 0, true);
+  putBlock(7, 4, 10, 0); // 削除後であるからミノブロックを置くことができる
   showBoard();
 };
