@@ -39,6 +39,31 @@ const showBoard = () => {
   }
 };
 
+const blockShapes = [
+  [[]], // 0 番目は背景に使用しているインデックスのため飛ばす
+  [[0, 0], [0, 1], [1, 0], [1, 1]], // O
+  [[0, 0], [0, -1], [0, 1], [0, 2]], // I
+  [[0, 0], [1, 0], [0, 1], [-1, 1]], // S
+  [[0, 0], [-1, 0], [0, 1], [1, 1]], // Z
+  [[0, 0], [0, -1], [0, 1], [1, 1]], // L
+  [[0, 0], [0, -1], [0, 1], [-1, 1]], // J
+  [[0, 0], [-1, 0], [1, 0], [0, -1]], // T
+]
+
+const putBlock = (blockIndex, x, y) => {
+  const blockShape = blockShapes[blockIndex];
+  for (let [dx, dy] of blockShape) {
+    board[y + dy][x + dx] = blockIndex;
+  }
+};
+
 window.onload = () => {
+  putBlock(1, 4, 1);
+  putBlock(2, 4, 6);
+  putBlock(3, 2, 10);
+  putBlock(4, 7, 10);
+  putBlock(5, 2, 14);
+  putBlock(6, 7, 14);
+  putBlock(7, 4, 18);
   showBoard();
 };
