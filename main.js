@@ -50,20 +50,21 @@ const blockShapes = [
   [[0, 0], [-1, 0], [1, 0], [0, -1]], // T
 ]
 
-const putBlock = (blockIndex, x, y) => {
+const putBlock = (blockIndex, x, y, rotation) => {
   const blockShape = blockShapes[blockIndex];
   for (let [dx, dy] of blockShape) {
+    for (let num_rotation = 0; num_rotation < rotation % 4; num_rotation++) {
+      [dx, dy] = [dy, -dx];
+    }
     board[y + dy][x + dx] = blockIndex;
   }
 };
 
 window.onload = () => {
-  putBlock(1, 4, 1);
-  putBlock(2, 4, 6);
-  putBlock(3, 2, 10);
-  putBlock(4, 7, 10);
-  putBlock(5, 2, 14);
-  putBlock(6, 7, 14);
-  putBlock(7, 4, 18);
+  putBlock(5, 4, 2, 0);
+  putBlock(5, 4, 6, 1);
+  putBlock(5, 4, 9, 2);
+  putBlock(5, 4, 12, 3);
+  putBlock(5, 4, 16, 4);
   showBoard();
 };
