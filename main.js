@@ -59,15 +59,18 @@ const putBlock = (blockIndex, x, y, rotation, remove = false, can_put = false) =
 
     if (remove) {
       board[y + dy][x + dx] = 0;
-    } else {
-      // すでにミノブロックが置かれている場合は置かない
-      if (board[y + dy][x + dx]) {
-        return false;
-      }
-      // すべてのブロックを置くことができるならば置く
-      if (can_put) {
-        board[y + dy][x + dx] = blockIndex;
-      }
+      continue;
+    }
+
+    // すべてのブロックを置くことができるならば置く
+    if (can_put) {
+      board[y + dy][x + dx] = blockIndex;
+      continue;
+    }
+
+    // すでにミノブロックが置かれている場合は置かない
+    if (board[y + dy][x + dx]) {
+      return false;
     }
   }
 
