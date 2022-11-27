@@ -53,10 +53,13 @@ const blockShapes = [
 const putBlock = (blockIndex, x, y, rotation, remove = false, can_put = false) => {
   const blockShape = blockShapes[blockIndex];
   for (let [dx, dy] of blockShape) {
+
+    // 回転
     for (let num_rotation = 0; num_rotation < rotation % 4; num_rotation++) {
       [dx, dy] = [dy, -dx];
     }
 
+    // 削除
     if (remove) {
       board[y + dy][x + dx] = 0;
       continue;
