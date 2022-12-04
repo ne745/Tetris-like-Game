@@ -103,6 +103,8 @@ const move = (dx, dy, dr) => {
 };
 
 const createNewBlock = () => {
+  clearLine();
+
   ci = Math.trunc(Math.random() * 7 + 1);
   cx = 4;
   cy = 0;
@@ -124,6 +126,30 @@ const gameOverProcedure = () => {
   }
   showBoard();
 }
+
+const clearLine = () => {
+  for (let y = 0; y < 20; y++) {
+    let removable = true;
+    for (let x = 0; x < 10; x++) {
+      if (board[y][x] === 0) {
+        // 一つでもブロックが置かれていない所があれば消せない
+        removable = false;
+        break;
+      }
+    }
+
+    // 一行消す
+    // 消す行に上の行をコピーする
+    if (removable) {
+      for (let j = y; j >= -1; j--) {
+        for (let x = 0; x < 10; x++) {
+          board[j][x] = (j === -1) ? 0 : board[j - 1][x];
+        }
+      }
+      y--;
+    }
+  }
+};
 
 window.onload = () => {
   createNewBlock();
