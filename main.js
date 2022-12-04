@@ -85,10 +85,47 @@ const putBlock = (blockIndex, x, y, rotation, remove = false, can_put = false) =
   return true;
 };
 
+let ci = 7, cx = 4, cy = 2, cr = 0;
+let gameover = false;
+
+const move = (dx, dy, dr) => {
+  putBlock(ci, cx, cy, cr, true);
+  if (putBlock(ci, cx + dx, cy + dy, cr + dr)) {
+    cx += dx;
+    cy += dy;
+    cr += dr;
+    showBoard();
+    return true;
+  } else {
+    putBlock(ci, cx, cy, cr)
+    return false;
+  }
+}
+
 window.onload = () => {
-  putBlock(5, 4, 10, 0);
-  putBlock(6, 4, 10, 0); // このミノブロックは置くことができない
-  putBlock(5, 4, 10, 0, true);
-  putBlock(7, 4, 10, 0); // 削除後であるからミノブロックを置くことができる
+  putBlock(ci, cx, cy, cr);
+
+  document.onkeydown = (e) => {
+    if (gameover) return;
+
+    switch (e.key) {
+      case "ArrowLeft":
+        move(-1, 0, 0);
+        break;
+      case "ArrowRight":
+        move(1, 0, 0);
+        break;
+      case "ArrowDown":
+        move(0, 1, 0);
+        break;
+      case "ArrowUp":
+        move(0, 0, 1);
+        break;
+      default:
+        break;
+    }
+    e.preventDefault();
+  }
+
   showBoard();
 };
