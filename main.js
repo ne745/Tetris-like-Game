@@ -105,6 +105,10 @@ const move = (dx, dy, dr) => {
 window.onload = () => {
   putBlock(ci, cx, cy, cr);
 
+  setInterval(() => {
+    move(0, 1, 0);
+  }, 300);
+
   document.onkeydown = (e) => {
     if (gameover) return;
 
