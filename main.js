@@ -85,7 +85,7 @@ const putBlock = (blockIndex, x, y, rotation, remove = false, can_put = false) =
   return true;
 };
 
-let ci = 7, cx = 4, cy = 2, cr = 0;
+let ci, cx, cy, cr;
 let gameover = false;
 
 const move = (dx, dy, dr) => {
@@ -100,13 +100,39 @@ const move = (dx, dy, dr) => {
     putBlock(ci, cx, cy, cr)
     return false;
   }
+};
+
+const createNewBlock = () => {
+  ci = Math.trunc(Math.random() * 7 + 1);
+  cx = 4;
+  cy = 0;
+  cr = Math.trunc(Math.random() * 4);
+
+  if (!putBlock(ci, cx, cy, cr)) {
+    gameOverProcedure();
+  }
+};
+
+const gameOverProcedure = () => {
+  gameover = true;
+  for (let y = 0; y < 20; y++) {
+    for (let x = 0; x < 10; x++) {
+      if (board[y][x]) {
+        board[y][x] = 1;
+      }
+    }
+  }
+  showBoard();
 }
 
 window.onload = () => {
-  putBlock(ci, cx, cy, cr);
+  createNewBlock();
 
   setInterval(() => {
-    move(0, 1, 0);
+    if (gameover) return;
+    if (!move(0, 1, 0)) {
+      createNewBlock();
+    }
   }, 300);
 
   document.onkeydown = (e) => {
